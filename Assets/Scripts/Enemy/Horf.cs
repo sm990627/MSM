@@ -6,10 +6,12 @@ public class Horf : MonoBehaviour
 {
     [Header("¿˚ Ω∫≈»")]
     [SerializeField] float _hp = 5.0f;
-    [SerializeField] float _power = 1f;
     [SerializeField] float _attackSpeed = 3f;
     [SerializeField] float _bulletSpeed = 6.0f;
     [SerializeField] GameObject _bullet;
+    GameObject[] _bulletPool;
+    GameObject _bulletParent;
+    int _poolIndex;
     bool _inAttack = false;
     Transform _playerTf;
     Animator _animator;
@@ -17,11 +19,19 @@ public class Horf : MonoBehaviour
     AttackCon attcnt;
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Head");
+        _bulletPool = new GameObject[5];
+        _bulletParent = GameObject.FindWithTag("Pool");
+        player = GameObject.Find("PlayerHead");
         attcnt = player.GetComponent<AttackCon>();
         _animator = GetComponent<Animator>();
         _playerTf = player.transform;
         Invoke("StopAttack", _attackSpeed);
+        for (int i = 0; i < _bulletPool.Length; i++)
+        {
+            GameObject gameObject = Instantiate(_bullet, _bulletParent.transform);
+            _bulletPool[i] = gameObject;
+            gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -39,7 +49,7 @@ public class Horf : MonoBehaviour
         _hp = _hp - attcnt.GetPower();
         if (_hp <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -53,8 +63,11 @@ public class Horf : MonoBehaviour
     {
         //ª˝º∫ ¿ßƒ° ∫§≈Õ
         Vector3 VI = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        GameObject bulletprefab = Instantiate(_bullet, VI, Quaternion.identity);
-        Rigidbody2D rb = bulletprefab.GetComponent<Rigidbody2D>();
+        //GameObject bulletprefab = Instantiate(_bullet, VI, Quaternion.identity);
+        _bulletPool[_poolIndex].SetActive(true);
+        _bulletPool[_poolIndex].transform.position = VI;
+        Rigidbody2D rb = _bulletPool[_poolIndex++].GetComponent<Rigidbody2D>();
+        IndexReset();
         //πﬂªÁ ∫§≈Õ  
         Vector2 dirVector = (_playerTf.position - transform.position).normalized;
         rb.AddForce(dirVector * _bulletSpeed, ForceMode2D.Impulse);
@@ -65,6 +78,10 @@ public class Horf : MonoBehaviour
         _inAttack = true;
         _animator.SetBool("inAttack", true);
     }
- 
+    void IndexReset()
+    {
+        if (_poolIndex == 5) _poolIndex = 0;
+    }
+
 
 }

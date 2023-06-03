@@ -13,7 +13,7 @@ public class RedMaw : MonoBehaviour
     AttackCon attcnt;
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Head");
+        player = GameObject.Find("PlayerHead");
         attcnt = player.GetComponent<AttackCon>();
         _playerTf = player.transform;
     }
@@ -29,7 +29,7 @@ public class RedMaw : MonoBehaviour
         _hp = _hp - attcnt.GetPower();
         if (_hp <= 0)
         {
-            Destroy(gameObject);
+           gameObject.SetActive(false);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

@@ -6,9 +6,9 @@ TagManager:
   tags:
   - Bullet
   - Bomb
-  - Head
   - Enemy
   - Stone
+  - Pool
   layers:
   - Default
   - TransparentFX
