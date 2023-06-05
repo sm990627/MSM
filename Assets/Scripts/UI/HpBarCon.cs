@@ -52,18 +52,15 @@ public class HpBarCon : MonoBehaviour
         {
             if (i < _hp)
             {
-                Debug.Log(i+"Âü");
                 _hpFills[i].fillAmount = 1;
             }
             else
             {
-                Debug.Log(i+"¾ÈÂü");
                 _hpFills[i].fillAmount = 0;
 
             }
             if (_hp % 1 != 0)
             {
-                Debug.Log(_hp % 1);
                 int lastPos = Mathf.FloorToInt(_hp);
                 _hpFills[lastPos].fillAmount = _hp % 1;
             }

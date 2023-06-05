@@ -162,23 +162,27 @@ public class PlayerCon : MonoBehaviour
     }
     void OnDamage(GameObject enemy)
     {
-        _hp = _hp - 0.5f;
-        _hbc.Init(_maxHp, _maxTotalHp, _hp);
-        _hbc.HpCon();
-        if (_hp > 0)
+        if (!inDamage)
         {
-            Debug.Log("¹Ð·Á³²");
-            _rbody.velocity = new Vector2(0, 0);
-            Vector2 dirVector = (transform.position - enemy.transform.position).normalized;
-            _rbody.AddForce(new Vector2(dirVector.x * 3 , dirVector.y * 3), ForceMode2D.Impulse);
-            inDamage = true;
-            gameObject.GetComponent<Animator>().SetBool("OnDamage",true);
-            Invoke("DamageEnd", 0.2f);
+            _hp = _hp - 0.5f;
+            _hbc.Init(_maxHp, _maxTotalHp, _hp);
+            _hbc.HpCon();
+            if (_hp > 0)
+            {
+
+                _rbody.velocity = new Vector2(0, 0);
+                Vector2 dirVector = (transform.position - enemy.transform.position).normalized;
+                _rbody.AddForce(new Vector2(dirVector.x * 3, dirVector.y * 3), ForceMode2D.Impulse);
+                inDamage = true;
+                gameObject.GetComponent<Animator>().SetBool("OnDamage", true);
+                Invoke("DamageEnd", 0.2f);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
-        else
-        {
-             gameObject.SetActive(false);
-        }
+       
         
     }
     private void OnCollisionEnter2D(Collision2D collision)
