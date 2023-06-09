@@ -2,35 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedMaw : MonoBehaviour
+public class Heart : MonoBehaviour
 {
-    [Header("Àû ½ºÅÈ")]
-    [SerializeField] float _moveSpeed = 3.0f;
-    [SerializeField] float _hp = 5.0f;
+
+    [SerializeField] float _moveSpeed = 2;
+    [SerializeField] float _hp = 5;
     Rigidbody2D _rig;
     Transform _playerTf;
-    GameObject player;
-    AttackCon attcnt;
+    GameObject _player;
+    AttackCon _attcnt;
     private void Start()
     {
-        _rig = GetComponent<Rigidbody2D>();
-        player = GameObject.Find("PlayerHead");
-        attcnt = player.GetComponent<AttackCon>();
-        _playerTf = player.transform;
+        _rig =GetComponent<Rigidbody2D>();
+        _player = GameObject.Find("PlayerHead");
+        _attcnt = _player.GetComponent<AttackCon>();
+        _playerTf = _player.transform;
     }
 
     void Update()
     {
         Vector2 dirVector = (_playerTf.position - transform.position).normalized;
-        _rig.velocity = dirVector * _moveSpeed;
+        _rig.velocity = -dirVector * _moveSpeed;
     }
     void OnDamage()
     {
-        
-        _hp = _hp - attcnt.GetPower();
+
+        _hp = _hp - _attcnt.GetPower();
         if (_hp <= 0)
         {
-           gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
