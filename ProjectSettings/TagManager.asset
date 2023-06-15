@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Stone
   - Pool
+  - Head
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Head
   - EnemyBullet
   - Enemy
-  - 
+  - Wall
   - 
   - 
   - 
