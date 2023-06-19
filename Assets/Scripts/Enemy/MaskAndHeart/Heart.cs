@@ -9,23 +9,51 @@ public class Heart : MonoBehaviour
 
     [SerializeField] float _moveSpeed = 2;
     [SerializeField] float _hp = 5;
+    [SerializeField] float _attackSpeed = 3f;
+    [SerializeField] float _bulletSpeed = 6.0f;
+    [SerializeField] GameObject _bullet;
+
     Rigidbody2D _rig;
     Transform _playerTf;
     GameObject _player;
     AttackCon _attcnt;
     bool _isEscape = false;
     Vector2 dirVector;
+    GameObject[] _bulletPool;
+    int _poolIndex;
+    bool _inAttack = false;
+    GameObject player;
+    AttackCon attcnt;
+    GameObject _bulletParent;
+
     private void Start()
     {
         _rig =GetComponent<Rigidbody2D>();
         _player = GameObject.Find("PlayerHead");
         _attcnt = _player.GetComponent<AttackCon>();
         _playerTf = _player.transform;
+        Invoke("StopAttack", _attackSpeed);
+        _bulletPool = new GameObject[8];
+        _bulletParent = GameObject.FindWithTag("Pool");
+        for (int i = 0; i < _bulletPool.Length; i++)
+        {
+            GameObject gameObject = Instantiate(_bullet, _bulletParent.transform);
+            _bulletPool[i] = gameObject;
+            gameObject.SetActive(false);
+        }
     }
 
     void Update()
     {
         FindDirection();
+        if (_inAttack)
+        {
+            
+            Attack();
+            _inAttack = false;
+            Invoke("StopAttack", _attackSpeed);
+        }
+        
     }
     void OnDamage()
     {
@@ -68,7 +96,7 @@ public class Heart : MonoBehaviour
         }
 
         
-        if (_minWidth < 1 && !_isEscape)
+        if (_minWidth < 1 )
         {
             switch (idx)
             {
@@ -139,10 +167,7 @@ public class Heart : MonoBehaviour
         float _distance = hitData.distance;
         return _distance;
     }
-    void Escape()
-    {
 
-    }
     float GetAngle(Vector2 v1, Vector2 v2)
     {
         float angle;
@@ -152,8 +177,35 @@ public class Heart : MonoBehaviour
         angle = Mathf.Rad2Deg * rad;
         return angle;
     }
-    void EscapeDelay()
+
+    void Attack()
     {
-        _isEscape = false;
+        //생성 위치 벡터
+        Vector3 VI = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        //GameObject bulletprefab = Instantiate(_bullet, VI, Quaternion.identity);
+        GameObject[] _FirePool = new GameObject[4];
+        float ang = 0;
+        for (int i = 0; i < _FirePool.Length; i++)
+        {
+            _FirePool[i] = _bulletPool[_poolIndex++];
+            IndexReset();
+            _FirePool[i].SetActive(true);
+            _FirePool[i].transform.position = VI;
+            Rigidbody2D rb = _FirePool[i].GetComponent<Rigidbody2D>();
+            Vector3 direction = Quaternion.AngleAxis(ang, Vector3.forward) * Vector3.right;
+            rb.AddForce(direction * _bulletSpeed, ForceMode2D.Impulse);
+            ang -= 90;
+        }
+
+
+    }
+    void StopAttack()
+    {
+        _inAttack = true;
+
+    }
+    void IndexReset()
+    {
+        if (_poolIndex == 8) _poolIndex = 0;
     }
 }

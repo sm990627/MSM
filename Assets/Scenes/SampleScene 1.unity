@@ -811,13 +811,13 @@ GameObject:
   - component: {fileID: 790544177}
   - component: {fileID: 790544176}
   - component: {fileID: 790544179}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mask
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!50 &790544176
 Rigidbody2D:
   serializedVersion: 4
@@ -914,13 +914,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790544174}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab5367a3307953c4ba73038a60855840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _heart: {fileID: 1678631627}
-  _moveSpeed: 3
+  _moveSpeed: 1
 --- !u!224 &790544180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -956,7 +956,7 @@ GameObject:
   - component: {fileID: 1001432397}
   m_Layer: 13
   m_Name: WallTrigger
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -974,7 +974,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.54388857, y: -2.152892}
+  m_Offset: {x: 0.53946686, y: -2.133292}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -985,7 +985,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 9.309407, y: 0.0784111}
+  m_Size: {x: 8.971813, y: 0.11761141}
   m_EdgeRadius: 0
 --- !u!61 &1001432398
 BoxCollider2D:
@@ -1000,7 +1000,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -4.162257, y: -0.01510787}
+  m_Offset: {x: -4.162257, y: 0.0071983337}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1011,7 +1011,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0784111, y: 4.3237634}
+  m_Size: {x: 0.0784111, y: 3.969181}
   m_EdgeRadius: 0
 --- !u!61 &1001432399
 BoxCollider2D:
@@ -1026,7 +1026,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 5.1881847, y: 0.021071672}
+  m_Offset: {x: 5.1881847, y: 0.052979708}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1037,7 +1037,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.07368803, y: 4.456555}
+  m_Size: {x: 0.07368851, y: 3.9551344}
   m_EdgeRadius: 0
 --- !u!61 &1001432400
 BoxCollider2D:
@@ -1052,7 +1052,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5132389, y: 2.1886423}
+  m_Offset: {x: 0.4995637, y: 2.1886423}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1063,7 +1063,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 9.370853, y: 0.08879614}
+  m_Size: {x: 8.978833, y: 0.08879614}
   m_EdgeRadius: 0
 --- !u!4 &1001432401
 Transform:
@@ -1778,7 +1778,7 @@ GameObject:
   - component: {fileID: 1678631631}
   - component: {fileID: 1678631630}
   - component: {fileID: 1678631632}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mask's Heart
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1901,8 +1901,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818a722b5f894754d9274e01a9b0fed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2
+  _moveSpeed: 3
   _hp: 5
+  _attackSpeed: 3
+  _bulletSpeed: 6
+  _bullet: {fileID: 2529642605252773737, guid: 4f010309183bd7349ac2f09d3e4c161b, type: 3}
 --- !u!1 &1965431355
 GameObject:
   m_ObjectHideFlags: 0
@@ -3203,6 +3206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}
+      propertyPath: _speed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
+        type: 3}
       propertyPath: _bulletCnt
       value: 4
       objectReference: {fileID: 0}
@@ -3225,6 +3233,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerBody
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417352756320077297, guid: bfdfa922a9a19a0429dfd990f8be1891,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8417352756834508708, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}

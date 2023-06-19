@@ -1,30 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Mask : MonoBehaviour
 {
     [SerializeField] GameObject _heart;
    
-    [SerializeField] float _moveSpeed = 3;
+    [SerializeField] float _moveSpeed = 1;
+    Vector2[] directions = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
+    Vector2 moveVector;
     Rigidbody2D _rig;
     Transform _player;
+    bool _isChase = false;
     void Start()
     {
         GameObject player = GameObject.Find("PlayerHead");
         _player = player.transform;
         _rig = GetComponent<Rigidbody2D>();
+        moveVector = directions[Random.Range(0, 4)];
     }
 
     void Update()
     {
         if (_heart != null)
         {
-            
+            ChangeDirection();
+            ChasePlayer();
+            _rig.velocity = moveVector * _moveSpeed;
         }
         else
         {
             gameObject.SetActive(false);
         }
     }
+
+    void ChasePlayer()
+    {
+        RaycastHit2D hit;
+        Vector2 dirPlayer = Vector2.zero;
+        for(int i = 0; i < directions.Length; i++)
+        {
+            hit = Physics2D.Raycast(transform.position, directions[i], Mathf.Infinity, 1 << LayerMask.NameToLayer("Player"));
+            if (hit)
+            {
+                dirPlayer = directions[i];
+                moveVector = dirPlayer;
+                _moveSpeed = 2.5f;
+                _isChase = true;
+                Debug.Log("ÃßÀûÁß");
+                Debug.Log(_moveSpeed);
+            }
+            else
+            {
+                _moveSpeed = 1;
+                _isChase = false;
+            }
+        }
+        
+    }
+    void ChangeDirection()
+    {
+        if (!_isChase)
+        {
+            RaycastHit2D hit;
+            Vector2 dirPlayer = Vector2.zero;
+            hit = Physics2D.Raycast(transform.position, moveVector, Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
+            if (hit.distance < Random.Range(0.3f, 1.5f))
+            {
+                
+                moveVector = directions[Random.Range(0, 4)];
+            }
+        }
+        
+        
+    }
+ 
 }
