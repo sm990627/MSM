@@ -46,6 +46,7 @@ public class Heart : MonoBehaviour
     void Update()
     {
         FindDirection();
+        
         if (_inAttack)
         {
             
@@ -53,7 +54,8 @@ public class Heart : MonoBehaviour
             _inAttack = false;
             Invoke("StopAttack", _attackSpeed);
         }
-        
+        _rig.velocity = dirVector * _moveSpeed;
+
     }
     void OnDamage()
     {
@@ -95,69 +97,74 @@ public class Heart : MonoBehaviour
             }
         }
 
-        
-        if (_minWidth < 1 )
+        if (!_isEscape)
         {
-            switch (idx)
+            _isEscape = true;
+            Invoke("CalDelay", 0.3f);
+            if (_minWidth < 1)
             {
-                case 0:
-                    {
-                        if (_angle < -135)
+                switch (idx)
+                {
+                    case 0:
                         {
-                            dirVector = Vector2.down;
+                            if (_angle < -135)
+                            {
+                                dirVector = Vector2.down;
+                            }
+                            else
+                            {
+                                dirVector = Vector2.left;
+                            }
+                            break;
                         }
-                        else
+                    case 1:
                         {
-                            dirVector = Vector2.left;
+                            if (_angle < -45)
+                            {
+                                dirVector = Vector2.right;
+                            }
+                            else
+                            {
+                                dirVector = Vector2.down;
+                            }
+                            break;
                         }
-                        break;
-                    }
-                case 1:
-                    {
-                        if (_angle < -45)
+                    case 2:
                         {
-                            dirVector = Vector2.right;
+                            if (_angle < 45)
+                            {
+                                dirVector = Vector2.up;
+                            }
+                            else
+                            {
+                                dirVector = Vector2.right;
+                            }
+                            break;
                         }
-                        else
+                    case 3:
                         {
-                            dirVector = Vector2.down;
+                            if (_angle < 135)
+                            {
+                                dirVector = Vector2.left;
+                            }
+                            else
+                            {
+                                dirVector = Vector2.up;
+                            }
+                            break;
                         }
-                        break;
-                    }
-                case 2:
-                    {
-                        if (_angle < 45)
-                        {
-                            dirVector = Vector2.up;
-                        }
-                        else
-                        {
-                            dirVector = Vector2.right;
-                        }
-                        break;
-                    }
-                case 3:
-                    {
-                        if (_angle < 135)
-                        {
-                            dirVector = Vector2.left;
-                        }
-                        else
-                        {
-                            dirVector = Vector2.up;
-                        }
-                        break;
-                    }
+                }
+
+            }
+            else
+            {
+                dirVector = -(_playerTf.position - transform.position).normalized;
+
             }
 
         }
-        else
-        {
-            dirVector = -(_playerTf.position - transform.position).normalized;
-            
-        }
 
-        _rig.velocity = dirVector * _moveSpeed;
+       
 
     }
     float CalDistance(Vector3 direction)
@@ -198,6 +205,10 @@ public class Heart : MonoBehaviour
         }
 
 
+    }
+    void CalDelay()
+    {
+        _isEscape = false;
     }
     void StopAttack()
     {

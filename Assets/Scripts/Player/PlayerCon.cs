@@ -17,6 +17,25 @@ public class PlayerCon : MonoBehaviour
     [SerializeField] float _range = 8.0f;
     [SerializeField] float _bulletSpeed = 6.0f;
     [SerializeField] float _hp = 3;
+    public float Hp
+    {
+        get
+        {
+            return _hp;
+        }
+        set
+        {
+            if(value > _hp)//hp증가
+            {
+
+            }
+            else if(value < _hp) //hp감소
+            {
+
+            }
+
+        }
+    }
     //이동,공격관련 변수
     float axisH;
     float axisV;
@@ -207,3 +226,4 @@ public class PlayerCon : MonoBehaviour
     }
 
 }
+

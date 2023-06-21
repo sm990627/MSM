@@ -53,6 +53,7 @@ public class Mask : MonoBehaviour
             }
             else
             {
+                
                 _moveSpeed = 1;
                 _isChase = false;
             }
