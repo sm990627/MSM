@@ -300,13 +300,13 @@ public class AttackCon : MonoBehaviour
     {
         return _power;
     }
-    public void Init(float power, float attackSpeed, int bulletCnt, float range, float bulletSpeed, GameObject bullet)
+    public void Init(PlayerStat stat, GameObject bullet)
     {
-        _power = power;
-        _attackSpeed = attackSpeed;
-        _bulletCnt = bulletCnt;
-        _range = range;
-        _bulletSpeed = bulletSpeed;
+        _power = stat.Power;
+        _attackSpeed = stat.AttackSpeed;
+        _bulletCnt = stat.BulletCnt;
+        _range = stat.Range;
+        _bulletSpeed = stat.BulletSpeed;
         _bullet = bullet;
     }
     void IndexReset()

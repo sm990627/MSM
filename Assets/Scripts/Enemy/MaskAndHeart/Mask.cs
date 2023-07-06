@@ -13,11 +13,13 @@ public class Mask : MonoBehaviour
     Rigidbody2D _rig;
     Transform _player;
     bool _isChase = false;
+    Animator _animator;
     void Start()
     {
         GameObject player = GameObject.Find("PlayerHead");
         _player = player.transform;
         _rig = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         moveVector = directions[Random.Range(0, 4)];
     }
 
@@ -27,6 +29,7 @@ public class Mask : MonoBehaviour
         {
             ChangeDirection();
             ChasePlayer();
+            AnimeCon();
             _rig.velocity = moveVector * _moveSpeed;
         }
         else
@@ -50,6 +53,7 @@ public class Mask : MonoBehaviour
                 _isChase = true;
                 Debug.Log("ÃßÀûÁß");
                 Debug.Log(_moveSpeed);
+                break;
             }
             else
             {
@@ -73,8 +77,26 @@ public class Mask : MonoBehaviour
                 moveVector = directions[Random.Range(0, 4)];
             }
         }
-        
-        
+
+    }
+    void AnimeCon()
+    {
+        if (moveVector == Vector2.down)
+        {
+            _animator.Play("MaskDown");
+        }
+        else if (moveVector == Vector2.up)
+        {
+            _animator.Play("MaskUp");
+        }
+        else if (moveVector == Vector2.right)
+        {
+            _animator.Play("MaskRight");
+        }
+        else
+        {
+            _animator.Play("MaskLeft");
+        }
     }
  
 }

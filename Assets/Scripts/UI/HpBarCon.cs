@@ -12,7 +12,19 @@ public class HpBarCon : MonoBehaviour
     Image[] _hpFills;
     [SerializeField] Transform _hpParent;
     [SerializeField] GameObject _hpBarPrefap;
-
+    public static HpBarCon instance;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         _hpBar = new GameObject[(int)_maxTotalHp];
@@ -23,15 +35,15 @@ public class HpBarCon : MonoBehaviour
 
     }
 
-
     public void Init(float maxHp, float maxTotalHp, float Hp)
     {
-        _maxHp = maxHp;
         _maxTotalHp = maxTotalHp;
+        _maxHp = maxHp;
         _hp = Hp;
     }
     public void MaxHpCon()
     {
+        if (_maxHp > _maxTotalHp) _maxHp = _maxTotalHp;
         for (int i = 0; i < _hpBar.Length; i++)
         {
             if (i < _maxHp)
@@ -47,7 +59,7 @@ public class HpBarCon : MonoBehaviour
 
     public void HpCon()
     {
-
+        if (_hp > _maxHp) _hp = _maxHp;
         for (int i = 0; i < _hpFills.Length; i++)
         {
             if (i < _hp)
@@ -77,4 +89,5 @@ public class HpBarCon : MonoBehaviour
             _hpFills[i] = temp.transform.Find("HpFill").GetComponent<Image>();
         }
     }
+   
 }
