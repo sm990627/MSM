@@ -19,7 +19,7 @@ public class PlayerCon : MonoBehaviour
     [SerializeField] float _bulletSpeed = 6.0f;
     [SerializeField] float _hp = 3;
 
-    public static PlayerCon instance;
+    public static PlayerCon _instance;
 
     //상태관련 변수
     float axisH;
@@ -33,9 +33,6 @@ public class PlayerCon : MonoBehaviour
     Rigidbody2D _rbody;
     GameObject _player;
     SpriteRenderer _rend;
-    AttackCon _attCon;
-    GameObject _hpBar;
-    HpBarCon _hbc;
     ItemManger im = new ItemManger();
     PlayerStat pStat;
 
@@ -51,9 +48,9 @@ public class PlayerCon : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if(_instance == null)
         {
-            instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -62,13 +59,11 @@ public class PlayerCon : MonoBehaviour
         }
 
         pStat = new PlayerStat(_maxHp,_maxTotalHp,_hp,_speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed);
-        _hpBar = GameObject.Find("Canvas");
-        _hbc =_hpBar.GetComponent<HpBarCon>();
         pStat.Hp = pStat.MaxHp;
-        _hbc.Init(pStat.MaxHp, _maxTotalHp, pStat.Hp);
+        HpBarCon._instance.Init(pStat.MaxHp, _maxTotalHp, pStat.Hp);
         _player = GameObject.Find("PlayerHead");
-        _attCon = _player.GetComponent<AttackCon>();
-        _attCon.Init(pStat,bullet);
+        AttackCon._instance.Init(pStat,bullet);
+        
     }
     public void Hitted(float dmg)
     {
@@ -191,8 +186,8 @@ public class PlayerCon : MonoBehaviour
         if (!inDamage)
         {
             pStat.Hp = pStat.Hp - 0.5f;
-            _hbc.Init(pStat.MaxHp, _maxTotalHp, pStat.Hp);
-            _hbc.HpCon();
+            HpBarCon._instance.Init(pStat.MaxHp, _maxTotalHp, pStat.Hp);
+            HpBarCon._instance.HpCon();
             if (pStat.Hp > 0)
             {
 
@@ -225,20 +220,17 @@ public class PlayerCon : MonoBehaviour
         {
             newItem = collision.gameObject;
             itemGain = true;
-            collision.transform.parent = transform;
+            collision.transform.parent = GameObject.Find("GainItem").transform;
             collision.transform.position = new Vector2(transform.position.x, transform.position.y + 0.6f); //아이템 머리위로
             gameObject.GetComponent<Animator>().SetBool("ItemGain",true);  
 
             im.AddItem(pStat, collision.GetComponent<ItemIdx>().Idx); //아이템 정보전달
 
              //눈물갯수와 hp정보 전달
-            _attCon.Init(pStat, bullet);
-            _hbc.Init(pStat.MaxHp, _maxTotalHp, pStat.Hp);
-            _hbc.MaxHpCon();
-            _hbc.HpCon();
-            Debug.Log(pStat.MaxHp + " " + _maxTotalHp + " " + pStat.Hp);
-
-
+            AttackCon._instance.Init(pStat, bullet);
+            HpBarCon._instance.Init(pStat.MaxHp, _maxTotalHp, pStat.Hp);
+            HpBarCon._instance.MaxHpCon();
+            HpBarCon._instance.HpCon();
             Invoke("ItemGainEnd", 1.5f);  //애니메이션끄기
             _player.GetComponent<SpriteRenderer>().enabled = false;
         }

@@ -12,12 +12,12 @@ public class HpBarCon : MonoBehaviour
     Image[] _hpFills;
     [SerializeField] Transform _hpParent;
     [SerializeField] GameObject _hpBarPrefap;
-    public static HpBarCon instance;
+    public static HpBarCon _instance;
     private void Awake()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else

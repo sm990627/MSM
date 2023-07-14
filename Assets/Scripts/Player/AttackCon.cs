@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttackCon : MonoBehaviour
 {
+    public static AttackCon _instance;
     //플레이어 스탯변수
     float _power = 1.0f;
     float _attackSpeed = 0.4f;
@@ -28,9 +29,18 @@ public class AttackCon : MonoBehaviour
     GameObject[] _bulletPool;
     int _poolIndex;
 
-    //스크립트 관리
-    PlayerCon plcnt;
-    GameObject player;
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         _bulletPool = new GameObject[100];
@@ -41,9 +51,6 @@ public class AttackCon : MonoBehaviour
             _bulletPool[i] = gameObject;
             gameObject.SetActive(false);
         }
-        
-        player = GameObject.Find("PlayerBody");
-        plcnt = player.GetComponent<PlayerCon>();
         GetComponent<Animator>().SetBool("isIdle", true);
 
     }
@@ -103,8 +110,8 @@ public class AttackCon : MonoBehaviour
     }
     void Attack()
     {
-        float axisH = plcnt.GetAxis().x;
-        float axisV = plcnt.GetAxis().y;
+        float axisH = PlayerCon._instance.GetAxis().x;
+        float axisV = PlayerCon._instance.GetAxis().y;
         switch (_bulletCnt)
         {
             case 1: //한발 발사 플레이어 형태 고려 생성위치 조정   공격값 구한걸로 cos, sin값 가져오기 (발사에 이용)
